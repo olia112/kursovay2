@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 /**
  * Created by Оля on 16.12.2014.
@@ -14,7 +15,8 @@ public class Board extends JPanel implements ActionListener {
     private final int B_HEIGHT = 500;
     private final int DOT_SIZE = 10;
     private final int ALL_DOTS = 2500;
-    private final int RAND_POS = 29;
+    private final int RAND_POS_X = B_WIDTH / DOT_SIZE;
+    private final int RAND_POS_Y = B_HEIGHT / DOT_SIZE;
     private final int DELAY = 100;
 
     private final int x[] = new int[ALL_DOTS];
@@ -31,7 +33,7 @@ public class Board extends JPanel implements ActionListener {
     private boolean inGame = true;
 
     private Timer timer;
-    private Image ball;
+    private Image dot;
     private Image apple;
     private Image head;
 
@@ -49,7 +51,7 @@ public class Board extends JPanel implements ActionListener {
     private void loadImages() {
 
         ImageIcon iid = new ImageIcon("src\\dot.png");
-        ball = iid.getImage();
+        dot = iid.getImage();
 
         ImageIcon iia = new ImageIcon("src\\apple.png");
         apple = iia.getImage();
@@ -63,8 +65,8 @@ public class Board extends JPanel implements ActionListener {
         dots = 3;
 
         for (int z = 0; z < dots; z++) {
-            x[z] = 40 - z * 10;
-            y[z] = 40;
+            x[z] = DOT_SIZE * 4 - z * DOT_SIZE;
+            y[z] = DOT_SIZE * 4;
         }
 
         locateApple();
@@ -90,7 +92,7 @@ public class Board extends JPanel implements ActionListener {
                 if (z == 0) {
                     g.drawImage(head, x[z], y[z], this);
                 } else {
-                    g.drawImage(ball, x[z], y[z], this);
+                    g.drawImage(dot, x[z], y[z], this);
                 }
             }
             g.setColor(Color.WHITE);
@@ -153,24 +155,24 @@ public class Board extends JPanel implements ActionListener {
 
         for (int z = dots; z > 0; z--) {
 
-            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+            if ((z > 3) && (x[0] == x[z]) && (y[0] == y[z])) { //(z>3)- условие того, что змейка не врежется в себя в самом начале игры, когда состоит из трёх соединений
                 inGame = false;
             }
         }
 
-        if (y[0] > B_HEIGHT-25) {
+        if (y[0] >= B_HEIGHT-DOT_SIZE * 2.5) { //Проверка столкновения змейки с нижней границей
             inGame = false;
         }
 
-        if (y[0] < 10) {
+        if (y[0] <= 0) {
             inGame = false;
         }
 
-        if (x[0] > B_WIDTH-25) {
+        if (x[0] >= B_WIDTH-DOT_SIZE * 2.5) { //Проверка столкновения змейки с правой границей
             inGame = false;
         }
 
-        if (x[0] < 10) {
+        if (x[0] <= 0) {
             inGame = false;
         }
 
@@ -181,10 +183,14 @@ public class Board extends JPanel implements ActionListener {
 
     private void locateApple() {
 
-        int r = (int) (Math.random() * RAND_POS);
+        Random rnd = new Random();
+
+        int r = 1 + rnd.nextInt (RAND_POS_X-4); // Исключаем появление яблочка на краю по х
+
         apple_x = ((r * DOT_SIZE));
 
-        r = (int) (Math.random() * RAND_POS);
+        r = 1 + rnd.nextInt (RAND_POS_Y-4); // Исключаем появление яблочка на краю по y
+
         apple_y = ((r * DOT_SIZE));
     }
 
@@ -235,3 +241,4 @@ public class Board extends JPanel implements ActionListener {
     }
 
 }
+
