@@ -13,7 +13,7 @@ public class Board extends JPanel implements ActionListener {
 
     private final int B_WIDTH = 500;
     private final int B_HEIGHT = 500;
-    private final int DOT_SIZE = 10;
+    private final int DOT_SIZE = 20;
     private final int ALL_DOTS = 2500;
     private final int RAND_POS_X = B_WIDTH / DOT_SIZE;
     private final int RAND_POS_Y = B_HEIGHT / DOT_SIZE;
@@ -164,7 +164,7 @@ public class Board extends JPanel implements ActionListener {
             inGame = false;
         }
 
-        if (y[0] <= 0) {
+        if (y[0] <= 0) { //Проверка столкновения змейки с верхней границей
             inGame = false;
         }
 
@@ -172,7 +172,7 @@ public class Board extends JPanel implements ActionListener {
             inGame = false;
         }
 
-        if (x[0] <= 0) {
+        if (x[0] <= 0) { //Проверка столкновения змейки с левой границей
             inGame = false;
         }
 
